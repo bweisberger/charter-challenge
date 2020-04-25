@@ -1,10 +1,16 @@
 import React from 'react'
-import { IRestaurant } from '../types';
+// import { IRestaurant } from '../types';
 
-export default function Restaurant() {
+interface IParentProps {
+  id: string;
+  name: string;
+}
+
+export default function Restaurant(props: IParentProps)  {
+  const { name, id } = props;
   return (
-    <div>
-      Restaurant
-    </div>
+    <li key={id}>
+      {name}
+    </li>
   )
 }

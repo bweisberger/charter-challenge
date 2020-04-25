@@ -1,14 +1,15 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { RestaurantTable } from './Restaurants';
 import { Filters } from './Filters';
 import { SearchBar } from './SearchBar';
+import './MainContainer.css';
 
 export default function MainContainer() {
   return (
-    <div>
-      <SearchBar/>
-      <Filters/>
-      <RestaurantTable/>
+    <div className='main-container'>
+      <SearchBar />
+      <Filters />
+      <RestaurantTable />
     </div>
   )
 }

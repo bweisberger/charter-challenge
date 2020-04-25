@@ -7,7 +7,7 @@ export default function SearchBar() {
   }
   return (
     <form onSubmit={handleSubmit}>
-      <input type='text'>Search Bar</input>
+      <input type='text' placeholder="Search for restaurants" id="search-bar"/>
       <button type='submit'>Search</button>
     </form>
   )
