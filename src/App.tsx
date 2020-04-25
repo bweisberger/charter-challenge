@@ -1,5 +1,5 @@
 import * as React from 'react';
-import Restaurants from './Restaurants';
+import { RestaurantTable } from './Restaurants';
 import logo from './logo.svg';
 import './App.css';
 
@@ -9,9 +9,7 @@ function App() {
     <div className="App">
       <header className="App-header">
         <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          <Restaurants/>
-        </p>
+        <RestaurantTable/>
         <a
           className="App-link"
           href="https://reactjs.org"
