@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
-import RestaurantList from '../../RestaurantList';
+import RestaurantList from '../RestaurantList/RestaurantList';
 import axios from 'axios';
-import { IRestaurant } from './types';
+import { IRestaurant } from '../types';
 
 
 export default function RestaurantTable() {
