@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { RestaurantTable } from './Restaurants';
+import { RestaurantTable } from './MainContainer/Restaurants';
 import logo from './logo.svg';
 import './App.css';
 
