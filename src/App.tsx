@@ -1,7 +1,7 @@
 import * as React from 'react';
-import { RestaurantTable } from './MainContainer/Restaurants';
 import logo from './logo.svg';
 import './App.css';
+import { MainContainer } from './MainContainer';
 
 
 function App() {
@@ -9,7 +9,7 @@ function App() {
     <div className="App">
       <header className="App-header">
         <img src={logo} className="App-logo" alt="logo" />
-        <RestaurantTable/>
+        <MainContainer/>
         <a
           className="App-link"
           href="https://reactjs.org"
