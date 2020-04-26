@@ -10,10 +10,10 @@ import './MainContainer.css';
 export default function MainContainer() {
   const [restaurants, setRestaurants] = useState<IRestaurant[] | undefined>();
   const [sortedRestaurants, setSortedRestaurants] = useState<IRestaurant[] | undefined>();
-  // const [genre, setGenre] = useState<string[] | []>([]);
-  // const [state, setState] = useState<string[] | []>([]);
-  // const [city, setCity] = useState<string[] | []>([]);
-  // const [search, setSearch] = useState<string | null>(null);
+  const [genres, setGenres] = useState<Set<string> | undefined>();
+  const [states, setStates] = useState<Set<string> | undefined>();
+  const [cities, setCities] = useState<Set<string> | undefined>();
+  // const [search, setSearch] = useState<string | undefined>();
 
   const options = {
     url: "https://code-challenge.spectrumtoolbox.com/api/restaurants",
@@ -43,12 +43,19 @@ export default function MainContainer() {
         return 0;
       }
     })
+    let genreSet = new Set();
+    restaurants?.forEach(restaurant => {
+      const genreArray = restaurant.genre.split(',');
+      genreArray.forEach(genre => genreSet.add(genre))
+      console.log(genreSet, 'inside forEach')
+    })
+    console.log(genreSet, 'completed set');
     setSortedRestaurants(sorted);
   }, [restaurants?.length])
   return (
     <div className='main-container'>
       <SearchBar />
-      <FilterContainer />
+      <FilterContainer genres={genres} states={states} cities={cities}/>
       <RestaurantContainer restaurants={sortedRestaurants} />
     </div>
   )
