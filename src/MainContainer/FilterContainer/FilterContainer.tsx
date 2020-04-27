@@ -10,8 +10,8 @@ interface ParentProps {
 
 export default function FilterContainer({genres, cities, states}: ParentProps) {
 
-  const handleFilter = (e: React.ChangeEvent): void => {
-    console.log(e.target, "target");
+  const handleFilter = (e: React.ChangeEvent<HTMLInputElement>): void => {
+    console.log(e.target.checked, "target");
     return
   }
   return (
