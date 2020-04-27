@@ -15,7 +15,7 @@ export default function FilterContainer({genres, cities, states}: ParentProps) {
     return
   }
   return (
-    <div>
+    <div className='filter-container'>
       <Filter name='genre' options={genres} handleFilter={handleFilter}/>
       <Filter name='state' options={states} handleFilter={handleFilter}/>
       <Filter name='city' options={cities} handleFilter={handleFilter}/>

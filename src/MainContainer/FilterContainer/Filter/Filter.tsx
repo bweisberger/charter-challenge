@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import './Filter.css';
 
 interface ParentProps {
   handleFilter: (event: React.ChangeEvent) => void;
@@ -15,7 +16,7 @@ export default function Filter({handleFilter, name, options}: ParentProps) {
     for(let key in options) {
       const count = options[key]
       elements.push(
-        <div>
+        <div className='filter'>
           <input type='checkbox' name={key} id={key} onChange={handleFilter}/>
           <label htmlFor={key}>{capitalize(key)}&nbsp;({count})</label>
         </div>
@@ -26,6 +27,7 @@ export default function Filter({handleFilter, name, options}: ParentProps) {
 
   return (
     <div className={ name }>
+      <h2>{capitalize(name!)}</h2> 
       { checkBoxes }
     </div>
   )
