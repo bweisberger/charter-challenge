@@ -7,22 +7,46 @@ import { FilterContainer } from './FilterContainer';
 import { SearchBar } from './SearchBar';
 import './MainContainer.css';
 
+// interface Category {
+//   name: string;
+// }
+
+// interface CategoryCount {
+//   count: number;
+// }
+
 export default function MainContainer() {
   const [restaurants, setRestaurants] = useState<IRestaurant[] | undefined>();
   const [sortedRestaurants, setSortedRestaurants] = useState<IRestaurant[] | undefined>();
-  const [genres, setGenres] = useState<Set<string> | undefined>();
-  const [states, setStates] = useState<Set<string> | undefined>();
-  const [cities, setCities] = useState<Set<string> | undefined>();
+  const [genres, setGenres] = useState<any | undefined>();
+  const [states, setStates] = useState<any | undefined>();
+  const [cities, setCities] = useState<any | undefined>();
   // const [search, setSearch] = useState<string | undefined>();
 
-  const options = {
-    url: "https://code-challenge.spectrumtoolbox.com/api/restaurants",
-    headers: {
-      Authorization: "Api-Key q3MNxtfep8Gt",
-    },
+  const getCategoryCount = (category: string): any => {
+    const count: any = {};
+    restaurants?.forEach(restaurant => {
+      const arr: string[] = (restaurant as any)[category].split(',');
+      arr.forEach(el => {
+        if(!count.hasOwnProperty(el)) {
+          count[el] = 1;
+        } else {
+          ++count[el]
+        }
+      })
+      return count;
+    })
+    return count;
   }
 
+  
   const getRestaurants = async ():Promise<void> => {
+    const options = {
+      url: "https://code-challenge.spectrumtoolbox.com/api/restaurants",
+      headers: {
+        Authorization: "Api-Key q3MNxtfep8Gt",
+      },
+    }
     await axios(options)
       .then((response: any) => {
         console.log(response.data, 'response');
@@ -43,15 +67,15 @@ export default function MainContainer() {
         return 0;
       }
     })
-    let genreSet = new Set();
-    restaurants?.forEach(restaurant => {
-      const genreArray = restaurant.genre.split(',');
-      genreArray.forEach(genre => genreSet.add(genre))
-      console.log(genreSet, 'inside forEach')
-    })
-    console.log(genreSet, 'completed set');
+    setGenres(getCategoryCount('genre'));
+    setCities(getCategoryCount('city'));
+    setStates(getCategoryCount('state'));
     setSortedRestaurants(sorted);
   }, [restaurants?.length])
+
+  useEffect(() => {
+    console.log(genres, cities, states, "in maincontainer")
+  }, [genres, cities, states])
   return (
     <div className='main-container'>
       <SearchBar />
