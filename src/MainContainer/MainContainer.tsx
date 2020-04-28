@@ -18,6 +18,7 @@ import './MainContainer.css';
 interface IFilterData {
   category: string;
   item: string;
+  checked: boolean;
 }
 
 
@@ -27,7 +28,9 @@ export default function MainContainer() {
   const [genres, setGenres] = useState<any | undefined>();
   const [states, setStates] = useState<any | undefined>();
   const [cities, setCities] = useState<any | undefined>();
-  const [filters, setFilters] = useState<string[]>([]);
+  const [genreFilters, setGenreFilters] = useState<string[]>([]);
+  const [cityFilters, setCityFilters] = useState<string[]>([]);
+  const [stateFilters, setStateFilters] = useState<string[]>([]);
   // const [search, setSearch] = useState<string | undefined>();
 
   const getCategoryCount = (category: string): any => {
@@ -36,9 +39,9 @@ export default function MainContainer() {
       const arr: string[] = (restaurant as any)[category].split(',');
       arr.forEach(el => {
         if (!categories.hasOwnProperty(el)) {
-          categories[el] = { count: 1, isChecked: false };
+          categories[el] = 1;
         } else {
-          ++categories[el].count
+          ++categories[el]
         }
       })
       return categories;
@@ -58,39 +61,73 @@ export default function MainContainer() {
     })
     return sorted;
   }
-  // const toggleCheck = (category: string, item: string) {
-  //   switch(category) {
-  //     case 'genre':
-  //       setGenresgenres[item].isChecked
-  //       break;
-  //     case 'city':
-  //       cities[item].isChecked
-  //       break;
-  //     case 'state':
-  //       states[item].isChecked
-  //       break;
-  //   }
-  // }
+  const toggleFilters = (category: string, item: string, checked: boolean) => {
+    switch(category) {
+      case 'genre':
+        if (checked) {
+          setGenreFilters([item, ...genreFilters])
+        } else {
+          const filtered = genreFilters.filter(element => element !== item);
+          setGenreFilters(filtered)
+        }
+        break;
+      case 'city':
+        if (checked) {
+          setCityFilters([item, ...cityFilters])
+        } else {
+          const filtered = cityFilters.filter(element => element !== item);
+          setCityFilters(filtered)
+        }
+        break;
+      case 'state':
+        if (checked) {
+          setStateFilters([item, ...stateFilters])
+        } else {
+          const filtered = stateFilters.filter(element => element !== item);
+          setStateFilters(filtered)
+        }
+        break;
+      default:
+        console.error(`Filter called with category ${category}.`) 
+        break;
+    }
+  }
 
-  const filterRestaurants = ({ category, item }: IFilterData) => {
-    console.log(restaurants, 'sorted');
-    console.log(category, 'category');
-    console.log(item, 'item');
-    setFilters([item, ...filters])
-    // toggleCheck(category, item);
-
+  const filterRestaurants = ({ category, item, checked }: IFilterData) => {
+    toggleFilters(category, item, checked);
     // Run through restaurants, if filter string is in that category, add the restaurant to array
     const filtered: IRestaurant[] = [];
-    restaurants?.forEach((restaurant: any) => {
-      filters.forEach(filter => {
-        if (restaurant[category].includes(filter)) {
-          filtered.push(restaurant)
-        }
-      })
-      }
-    });
-    
+    if(genreFilters.length){
+      restaurants?.forEach((restaurant: any) => {
+        genreFilters.forEach(filter => {
+          if (restaurant.genre.includes(filter)) {
+            filtered.push(restaurant)
+          }
+        })
+      });
+    }
+    if(cityFilters.length){
+      restaurants?.forEach((restaurant: any) => {
+        cityFilters.forEach(filter => {
+          if (restaurant.city.includes(filter)) {
+            filtered.push(restaurant)
+          }
+        })
+      });
+    }
+    if(stateFilters.length){
+      restaurants?.forEach((restaurant: any) => {
+        stateFilters.forEach(filter => {
+          if (restaurant.state.includes(filter)) {
+            filtered.push(restaurant)
+          }
+        })
+      });
+    }
+    setSortedRestaurants(filtered);
   }
+    
+  
 
   const getRestaurants = async (): Promise<void> => {
     const options = {

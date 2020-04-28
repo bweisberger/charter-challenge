@@ -13,27 +13,29 @@ export default function Filter({handleFilter, name, category}: ParentProps) {
 
   const capitalize = (word: string): string => word.charAt(0).toUpperCase() + word.slice(1);
 
-  useEffect(() => {
+  const categoryCountArray = () => {
     const elements: any[][] = [];
     for(let key in category) {
-      const element: any[] = [key, category[key].count, category[key].isChecked]
+      const element: any[] = [key, category[key]]
       elements.push(element);
     }
-    elements.sort((a: any[], b: any[]): number => {
-      if(parseInt(a[1]) < parseInt(b[1])){
-        return 1;
-      } else if (parseInt(a[1]) > parseInt(b[1])){
-        return -1;
-      } else {
-        return 0;
-      }
-    })
+    return elements;
+  }
+
+  const sortByCount = (a: any[], b: any[]): number => {
+    console.log(a, b, 'inside sortyByCount')
+    return b[1] - a[1];
+  }
+
+  useEffect(() => {
+    const elements = categoryCountArray();
+    elements.sort(sortByCount);
+
     const mappedElements = elements.map(element => {
       const item = element[0];
       const count = element[1];
-      const isChecked = element[2];
       return  <span className="checkbox-container" key={item}>
-                <input type='checkbox' name={name} id={item} onChange={handleFilter} checked={isChecked}/>
+                <input type='checkbox' name={name} id={item} onChange={handleFilter}/>
                 <label className='filter-label' htmlFor={item}>{capitalize(item)}&nbsp;({count})</label>
                 &ensp;
               </span>
@@ -47,10 +49,8 @@ export default function Filter({handleFilter, name, category}: ParentProps) {
 
   return (
     <span className={name}>
+      {/* TODO: Create checkbox group with parent checkbox */}
       <h2>{ capitalize(name!) }</h2> 
-      <div>
-        <input type='checkbox' name="check-all" id={name + '-check-all'}/> <label htmlFor={name + '-check-all'}>All</label>
-      </div>
       { checkBoxes }
     </span>
   )

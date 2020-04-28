@@ -13,10 +13,11 @@ export default function FilterContainer(props: ParentProps) {
   const { genres, states, cities, filterRestaurants } = props;
 
   const handleFilter = (e: React.ChangeEvent<HTMLInputElement>): void => {
-    console.log(e.target.name, e.target.id, "target");
+    console.log(e.target.name, e.target.id, e.target.checked, "target");
     const filterData = {
       category: e.target.name,
       item: e.target.id,
+      checked: e.target.checked,
     }
     filterRestaurants(filterData);
   }
