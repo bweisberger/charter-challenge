@@ -4,20 +4,22 @@ import './Filter.css';
 interface ParentProps {
   handleFilter: (event: React.ChangeEvent<HTMLInputElement>) => void;
   name: string | undefined;
-  options: any | undefined;
+  category: any | undefined;
+  
 }
 
-export default function Filter({handleFilter, name, options}: ParentProps) {
+export default function Filter({handleFilter, name, category}: ParentProps) {
   const [checkBoxes, setCheckBoxes] = useState<JSX.Element[] | []>([]);
 
   const capitalize = (word: string): string => word.charAt(0).toUpperCase() + word.slice(1);
+
   useEffect(() => {
-    const elements: string[][] = [];
-    for(let key in options) {
-      const element = [key, options[key]]
+    const elements: any[][] = [];
+    for(let key in category) {
+      const element: any[] = [key, category[key].count, category[key].isChecked]
       elements.push(element);
     }
-    elements.sort((a: string[], b: string[]): number => {
+    elements.sort((a: any[], b: any[]): number => {
       if(parseInt(a[1]) < parseInt(b[1])){
         return 1;
       } else if (parseInt(a[1]) > parseInt(b[1])){
@@ -27,24 +29,29 @@ export default function Filter({handleFilter, name, options}: ParentProps) {
       }
     })
     const mappedElements = elements.map(element => {
-      const category = element[0];
+      const item = element[0];
       const count = element[1];
-      return  <div className='filter' key={category}>
-                <input type='checkbox' name={category} id={category} onChange={handleFilter}/>
-                <label htmlFor={category}>{capitalize(category)}&nbsp;({count})</label>
-              </div>
+      const isChecked = element[2];
+      return  <span className="checkbox-container" key={item}>
+                <input type='checkbox' name={name} id={item} onChange={handleFilter} checked={isChecked}/>
+                <label className='filter-label' htmlFor={item}>{capitalize(item)}&nbsp;({count})</label>
+                &ensp;
+              </span>
     })
     setCheckBoxes(mappedElements);
-  }, [options]);
+  }, [category]);
 
   useEffect(() => {
     checkBoxes.sort()
   })
 
   return (
-    <div className={ name }>
-      <h2>{capitalize(name!)}</h2> 
+    <span className={name}>
+      <h2>{ capitalize(name!) }</h2> 
+      <div>
+        <input type='checkbox' name="check-all" id={name + '-check-all'}/> <label htmlFor={name + '-check-all'}>All</label>
+      </div>
       { checkBoxes }
-    </div>
+    </span>
   )
 }
