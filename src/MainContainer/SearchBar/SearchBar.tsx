@@ -1,13 +1,16 @@
 import React from 'react';
 
-export default function SearchBar() {
+interface ParentProps {
+  handleSearch: (event: React.FormEvent<HTMLFormElement>) => void;
+  handleChange: (event: React.ChangeEvent<HTMLInputElement>) => void;
+  search: string;
+}
 
-  const handleSubmit = (): void => {
+export default function SearchBar({handleSearch, search, handleChange}: ParentProps) {
 
-  }
   return (
-    <form onSubmit={handleSubmit}>
-      <input type='text' placeholder="Search for restaurants" id="search-bar"/>
+    <form onSubmit={handleSearch}>
+      <input type='text' placeholder="Search for restaurants" id="search-bar" value={search} onChange={handleChange}/>
       <button type='submit'>Search</button>
     </form>
   )

@@ -23,7 +23,6 @@ export default function Filter({handleFilter, name, category}: ParentProps) {
   }
 
   const sortByCount = (a: any[], b: any[]): number => {
-    console.log(a, b, 'inside sortyByCount')
     return b[1] - a[1];
   }
 

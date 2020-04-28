@@ -3,7 +3,7 @@ import { IRestaurant } from '../types';
 import { Restaurant } from '..';
 
 interface ParentProps {
-  restaurants: IRestaurant[] | undefined;
+  restaurants: IRestaurant[];
 }
 
 export default function RestaurantList({restaurants}: ParentProps) {

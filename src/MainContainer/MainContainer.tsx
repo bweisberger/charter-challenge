@@ -31,11 +31,11 @@ export default function MainContainer() {
   const [genreFilters, setGenreFilters] = useState<string[]>([]);
   const [cityFilters, setCityFilters] = useState<string[]>([]);
   const [stateFilters, setStateFilters] = useState<string[]>([]);
-  // const [search, setSearch] = useState<string | undefined>();
+  const [searchQuery, setSearchQuery] = useState<string>('');
 
   const getCategoryCount = (category: string): any => {
     const categories: any = {};
-    restaurants?.forEach(restaurant => {
+    restaurants.forEach(restaurant => {
       const arr: string[] = (restaurant as any)[category].split(',');
       arr.forEach(el => {
         if (!categories.hasOwnProperty(el)) {
@@ -62,13 +62,14 @@ export default function MainContainer() {
     return sorted;
   }
   const toggleFilters = (category: string, item: string, checked: boolean) => {
+    console.log(category, item, checked, 'in toggleFilters')
     switch(category) {
       case 'genre':
         if (checked) {
-          setGenreFilters([item, ...genreFilters])
+          setGenreFilters([item, ...genreFilters]);
         } else {
           const filtered = genreFilters.filter(element => element !== item);
-          setGenreFilters(filtered)
+          setGenreFilters(filtered);
         }
         break;
       case 'city':
@@ -93,42 +94,19 @@ export default function MainContainer() {
     }
   }
 
+  const handleSearch = (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    
+  }
+  
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setSearchQuery(e.target.value);
+  }
+
   const filterRestaurants = ({ category, item, checked }: IFilterData) => {
     toggleFilters(category, item, checked);
-    // Run through restaurants, if filter string is in that category, add the restaurant to array
-    const filtered: IRestaurant[] = [];
-    if(genreFilters.length){
-      restaurants?.forEach((restaurant: any) => {
-        genreFilters.forEach(filter => {
-          if (restaurant.genre.includes(filter)) {
-            filtered.push(restaurant)
-          }
-        })
-      });
-    }
-    if(cityFilters.length){
-      restaurants?.forEach((restaurant: any) => {
-        cityFilters.forEach(filter => {
-          if (restaurant.city.includes(filter)) {
-            filtered.push(restaurant)
-          }
-        })
-      });
-    }
-    if(stateFilters.length){
-      restaurants?.forEach((restaurant: any) => {
-        stateFilters.forEach(filter => {
-          if (restaurant.state.includes(filter)) {
-            filtered.push(restaurant)
-          }
-        })
-      });
-    }
-    setSortedRestaurants(filtered);
   }
     
-  
-
   const getRestaurants = async (): Promise<void> => {
     const options = {
       url: "https://code-challenge.spectrumtoolbox.com/api/restaurants",
@@ -148,20 +126,60 @@ export default function MainContainer() {
 
   useEffect(() => {
     const sorted = sortRestaurants(restaurants, 'name')
-
+    console.log(sorted);
     setGenres(getCategoryCount('genre'));
     setCities(getCategoryCount('city'));
     setStates(getCategoryCount('state'));
 
     setSortedRestaurants(sorted);
-  }, [restaurants?.length])
+  }, [restaurants])
 
   useEffect(() => {
-    console.log(genres, cities, states, "in maincontainer")
-  }, [genres, cities, states])
+    // Run through restaurants, if filter string is in that category, add the restaurant to array
+    let sorted: IRestaurant[] = [];
+    console.log(genreFilters, 'genreFilters')
+    // TODO: Pull this out into its own function
+    if (genreFilters.length || cityFilters.length || stateFilters.length ) {
+      let baseList: IRestaurant[] = [...sortedRestaurants];
+      let filtered: IRestaurant[] = [];
+      if(genreFilters.length){
+        genreFilters.forEach(filter => {
+          baseList.forEach(restaurant => {
+            if(restaurant.genre.includes(filter)) {
+              filtered.push(restaurant);
+            }
+          })
+        })
+      }
+      if(cityFilters.length){
+        cityFilters.forEach(filter => {
+          restaurants.forEach((restaurant: any) => {
+            if (restaurant.city.includes(filter)) {
+              filtered.push(restaurant)
+            }
+          })
+        });
+      }
+      if(stateFilters.length){
+        stateFilters.forEach(filter => {
+          restaurants.forEach((restaurant: any) => {
+            if (restaurant.state.includes(filter)) {
+              filtered.push(restaurant)
+            }
+          })
+        });
+      }
+      console.log(filtered, 'filtered restaurants')
+      sorted = sortRestaurants(filtered, 'name');
+    } else {
+      sorted = sortRestaurants(restaurants, 'name');
+    }
+    setSortedRestaurants(sorted);
+  }, [genreFilters, cityFilters, stateFilters])
+
   return (
     <div className='main-container'>
-      <SearchBar />
+      <SearchBar handleSearch={handleSearch} search={searchQuery} handleChange={handleChange} />
       <FilterContainer genres={genres} states={states} cities={cities} filterRestaurants={filterRestaurants} />
       <RestaurantContainer restaurants={sortedRestaurants} />
     </div>

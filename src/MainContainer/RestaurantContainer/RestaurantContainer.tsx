@@ -3,7 +3,7 @@ import RestaurantList from './RestaurantList/RestaurantList';
 import { IRestaurant } from './types';
 
 interface ParentProps {
-  restaurants: IRestaurant[] | undefined;
+  restaurants: IRestaurant[];
 };
 export default function RestaurantContainer({ restaurants }: ParentProps) {
 
