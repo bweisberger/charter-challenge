@@ -5,12 +5,15 @@ import './RestaurantContainer.css';
 
 interface ParentProps {
   restaurants: IRestaurant[];
+  currentPage: string;
 };
-export default function RestaurantContainer({ restaurants }: ParentProps) {
+export default function RestaurantContainer({ restaurants, currentPage }: ParentProps) {
 
-  //TODO: logic for pagination based on number of restaurants and number of restaurantsperpage
 const restaurantsToDisplay = () => {
-  return restaurants;
+  const pageNumber = parseInt(currentPage);
+  const lastIndex = pageNumber * 10;
+  const firstIndex = lastIndex - 10;
+  return restaurants.slice(firstIndex, lastIndex);
 }
 
   return (

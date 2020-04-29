@@ -13,7 +13,7 @@ export default function Filter({handleFilter, name, category}: ParentProps) {
 
   const capitalize = (word: string): string => word.charAt(0).toUpperCase() + word.slice(1);
 
-  const categoryCountArray = () => {
+  const categoryCountArray = (): any[][] => {
     const elements: any[][] = [];
     for(let key in category) {
       const element: any[] = [key, category[key]]

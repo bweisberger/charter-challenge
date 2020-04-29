@@ -3,6 +3,7 @@ import { Filter } from './Filter';
 import './FilterContainer.css';
 
 interface ParentProps {
+  // TODO: created interfaces to describe genres
   genres: any | undefined;
   cities: any | undefined;
   states: any | undefined;
@@ -13,7 +14,6 @@ export default function FilterContainer(props: ParentProps) {
   const { genres, states, cities, filterRestaurants } = props;
 
   const handleFilter = (e: React.ChangeEvent<HTMLInputElement>): void => {
-    console.log(e.target.name, e.target.id, e.target.checked, "target");
     const filterData = {
       category: e.target.name,
       item: e.target.id,
@@ -21,9 +21,7 @@ export default function FilterContainer(props: ParentProps) {
     }
     filterRestaurants(filterData);
   }
-  useEffect(() => {
-    console.log(genres, states, cities, "props")
-  }, [genres])
+
   return (
     <div className='filter-container'>
       <Filter name='genre' category={genres} handleFilter={handleFilter}/>

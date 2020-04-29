@@ -1,0 +1,8 @@
+.current{
+  color: skyblue;
+  font-weight: bold;
+}
+
+.not-current{
+  font-weight: 300;
+}

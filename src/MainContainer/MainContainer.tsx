@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 
 import { RestaurantContainer } from './RestaurantContainer';
+import { PageNumbers } from './RestaurantContainer';
 import { IRestaurant } from './RestaurantContainer/types';
 import { FilterContainer } from './FilterContainer';
 import { SearchBar } from './SearchBar';
@@ -28,6 +29,8 @@ export default function MainContainer() {
   const [genres, setGenres] = useState<any | undefined>();
   const [states, setStates] = useState<any | undefined>();
   const [cities, setCities] = useState<any | undefined>();
+  const [currentPage, setCurrentPage] = useState<string>('1')
+  const [pages, setPages] = useState<number[]>([]);
   const [genreFilters, setGenreFilters] = useState<string[]>([]);
   const [cityFilters, setCityFilters] = useState<string[]>([]);
   const [stateFilters, setStateFilters] = useState<string[]>([]);
@@ -65,7 +68,6 @@ export default function MainContainer() {
     switch(category) {
       case 'genre':
         if (checked) {
-          console.log('here')
           setGenreFilters(genreFilters => [item, ...genreFilters]);
         } else {
           setGenreFilters(
@@ -96,6 +98,10 @@ export default function MainContainer() {
         break;
     }
   }
+
+  const handlePage = (e: React.MouseEvent<HTMLSpanElement>) => {
+    setCurrentPage((e.target as HTMLSpanElement).textContent!);
+  }
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const oldQuery = searchQuery;
     setSearchQuery(e.target.value);
@@ -112,7 +118,6 @@ export default function MainContainer() {
   }
 
   const searchRestaurants = () => {
-    console.log('in searchRestaurants');
     const filtered: IRestaurant[] = [];
     if(searchQuery) {
       sortedRestaurants.forEach((restaurant: any) => {
@@ -128,6 +133,14 @@ export default function MainContainer() {
       return;
     }
   }
+
+  const calculatePages = (arr: IRestaurant[]) => {
+    const pageNumbers: number[] = [];
+    for (let i = 1; i <= Math.ceil(arr.length / 10); i++) {
+      pageNumbers.push(i);
+    }
+    return pageNumbers;
+  }
   
   const filterRestaurants = ({ category, item, checked }: IFilterData) => {
     toggleFilters(category, item, checked);
@@ -142,7 +155,6 @@ export default function MainContainer() {
     }
     await axios(options)
       .then((response: any) => {
-        console.log(response.data, 'response');
         setRestaurants([...response.data]);
       });
   }
@@ -152,12 +164,14 @@ export default function MainContainer() {
 
   useEffect(() => {
     const sorted = sortRestaurants(restaurants, 'name')
-    console.log(sorted);
+    setSortedRestaurants(sorted);
+
     setGenres(getCategoryCount('genre'));
     setCities(getCategoryCount('city'));
     setStates(getCategoryCount('state'));
 
-    setSortedRestaurants(sorted);
+    setPages(calculatePages(sorted));
+    
   }, [restaurants])
 
   useEffect(() => {
@@ -199,19 +213,20 @@ export default function MainContainer() {
           })
         });
       }
-      console.log(filtered, 'filtered restaurants')
       sorted = sortRestaurants(filtered, 'name');
     } else {
       sorted = sortRestaurants(restaurants, 'name');
     }
     setSortedRestaurants(sorted);
+    setPages(calculatePages(sorted));
   }, [genreFilters, cityFilters, stateFilters, searchQuery])
 
   return (
     <div className='main-container'>
       <SearchBar handleSearch={handleSearch} search={searchQuery} handleChange={handleChange} />
+      <PageNumbers pages={pages} handlePage={handlePage} currentPage={currentPage}/>
       <FilterContainer genres={genres} states={states} cities={cities} filterRestaurants={filterRestaurants} />
-      <RestaurantContainer restaurants={sortedRestaurants} />
+      <RestaurantContainer restaurants={sortedRestaurants} currentPage={currentPage}/>
     </div>
   )
 }
