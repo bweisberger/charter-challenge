@@ -1,0 +1,13 @@
+.filter-container {
+  display: flex;
+  flex-direction: column;
+  width: 15vw;
+}
+
+.checkbox-container {
+  width: 250px;
+}
+
+.filter-title {
+  cursor: pointer;
+}

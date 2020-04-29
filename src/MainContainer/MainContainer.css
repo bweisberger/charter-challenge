@@ -1,0 +1,39 @@
+.main-container {
+  font-size: 18px;
+  width: 100%;
+  background: white;
+  display: grid;
+  justify-content: center;
+  /* text-align: center; */
+  grid-template-columns: .75fr 1fr 5fr;
+  grid-template-rows: 50px 50px 50px 80vh 50px;
+  grid-template-areas:
+    '. . .'
+    'search search search'
+    '. pages restaurants'
+    '. filters restaurants'
+    '. filters restaurants';
+}
+
+.search-bar-container {
+  grid-area: search;
+  /* margin: 0 20px; */
+  /* justify-content: center; */
+  /* text-align: center; */
+}
+
+.restaurant-container {
+  grid-area: restaurants;
+  justify-self: left;
+}
+
+.filter-container {
+  grid-area: filters;
+  justify-self: center;
+  margin-top: 20px;
+}
+
+.pages-container {
+  grid-area: pages;
+  padding: 30px;
+}

@@ -1,0 +1,23 @@
+.search-bar-container {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  font-size: 22px;
+}
+
+.search-bar {
+  width: 80%;
+  height: 40px;
+  font-size: 22px;
+  padding-left: 10px;
+}
+
+.search-bar:focus, .submit-button:focus{
+  outline: none;
+}
+
+.submit-button {
+  font-size: 22px;
+  height: 45px;
+  background: skyblue;
+}
