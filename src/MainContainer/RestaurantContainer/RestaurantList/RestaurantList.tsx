@@ -9,7 +9,7 @@ interface ParentProps {
 export default function RestaurantList({restaurants}: ParentProps) {
   
   return (
-    <div>
+    <ul className='restaurant-ul'>
       {
         restaurants ?
             restaurants.map((restaurant: IRestaurant) => {
@@ -20,6 +20,6 @@ export default function RestaurantList({restaurants}: ParentProps) {
         :
           <div>loading</div>
       }
-    </div>
+    </ul>
   )
 }

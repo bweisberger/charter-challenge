@@ -1,4 +1,5 @@
 import React from 'react';
+import './SearchBar.css';
 
 interface ParentProps {
   handleSearch: (event: React.FormEvent<HTMLFormElement>) => void;

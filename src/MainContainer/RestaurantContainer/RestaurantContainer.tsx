@@ -1,6 +1,7 @@
 import React from 'react';
 import RestaurantList from './RestaurantList/RestaurantList';
 import { IRestaurant } from './types';
+import './RestaurantContainer.css';
 
 interface ParentProps {
   restaurants: IRestaurant[];
@@ -13,8 +14,8 @@ const restaurantsToDisplay = () => {
 }
 
   return (
-    <ul>
-      <RestaurantList restaurants={restaurantsToDisplay()} />
-    </ul>
+    <div className="restaurant-container">
+        <RestaurantList restaurants={restaurantsToDisplay()} />
+    </div>
   )
 }
