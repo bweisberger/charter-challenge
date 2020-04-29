@@ -9,7 +9,7 @@ interface ParentProps {
 }
 
 export default function Filter({handleFilter, name, category}: ParentProps) {
-  const [checkBoxes, setCheckBoxes] = useState<JSX.Element[] | []>([]);
+  const [checkBoxes, setCheckBoxes] = useState<JSX.Element[]>([]);
 
   const capitalize = (word: string): string => word.charAt(0).toUpperCase() + word.slice(1);
 
@@ -33,11 +33,13 @@ export default function Filter({handleFilter, name, category}: ParentProps) {
     const mappedElements = elements.map(element => {
       const item = element[0];
       const count = element[1];
-      return  <span className="checkbox-container" key={item}>
-                <input type='checkbox' name={name} id={item} onChange={handleFilter}/>
-                <label className='filter-label' htmlFor={item}>{capitalize(item)}&nbsp;({count})</label>
-                &ensp;
-              </span>
+      return  (
+        <span className="checkbox-container" key={item}>
+          <input type='checkbox' name={name} id={item} onChange={handleFilter}/>
+          <label className='filter-label' htmlFor={item}>{capitalize(item)}&nbsp;({count})</label>
+          &ensp;
+        </span>
+      )
     })
     setCheckBoxes(mappedElements);
   }, [category]);
@@ -49,7 +51,7 @@ export default function Filter({handleFilter, name, category}: ParentProps) {
   return (
     <span className={name}>
       {/* TODO: Create checkbox group with parent checkbox */}
-      <h2>{ capitalize(name!) }</h2> 
+      <h3>{ capitalize(name!) }</h3> 
       { checkBoxes }
     </span>
   )

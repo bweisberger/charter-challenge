@@ -66,6 +66,7 @@ export default function MainContainer() {
     switch(category) {
       case 'genre':
         if (checked) {
+          console.log('here')
           setGenreFilters([item, ...genreFilters]);
         } else {
           const filtered = genreFilters.filter(element => element !== item);
@@ -93,15 +94,34 @@ export default function MainContainer() {
         break;
     }
   }
-
-  const handleSearch = (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-    
-  }
-  
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setSearchQuery(e.target.value);
   }
+
+  const handleSearch = (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    searchRestaurants();
+  }
+
+  const searchRestaurants = () => {
+    console.log('in searchRestaurants');
+    const filtered: IRestaurant[] = [];
+    if(searchQuery) {
+      sortedRestaurants.forEach((restaurant: any) => {
+        for (let key in restaurant) {
+          if (restaurant[key].toLowerCase().includes(searchQuery.toLowerCase())) {
+            filtered.push(restaurant);
+            break;
+            console.log(filtered, 'filtered');
+          }
+        }
+      })
+      setSortedRestaurants(filtered);
+    } else {
+      return;
+    }
+  }
+  
 
   const filterRestaurants = ({ category, item, checked }: IFilterData) => {
     toggleFilters(category, item, checked);
@@ -153,7 +173,7 @@ export default function MainContainer() {
       }
       if(cityFilters.length){
         cityFilters.forEach(filter => {
-          restaurants.forEach((restaurant: any) => {
+          baseList.forEach((restaurant: any) => {
             if (restaurant.city.includes(filter)) {
               filtered.push(restaurant)
             }
@@ -162,7 +182,7 @@ export default function MainContainer() {
       }
       if(stateFilters.length){
         stateFilters.forEach(filter => {
-          restaurants.forEach((restaurant: any) => {
+          baseList.forEach((restaurant: any) => {
             if (restaurant.state.includes(filter)) {
               filtered.push(restaurant)
             }
