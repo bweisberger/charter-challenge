@@ -62,31 +62,33 @@ export default function MainContainer() {
     return sorted;
   }
   const toggleFilters = (category: string, item: string, checked: boolean) => {
-    console.log(category, item, checked, 'in toggleFilters')
     switch(category) {
       case 'genre':
         if (checked) {
           console.log('here')
-          setGenreFilters([item, ...genreFilters]);
+          setGenreFilters(genreFilters => [item, ...genreFilters]);
         } else {
-          const filtered = genreFilters.filter(element => element !== item);
-          setGenreFilters(filtered);
+          setGenreFilters(
+            genreFilters => genreFilters.filter(element => element !== item)
+          );
         }
         break;
       case 'city':
         if (checked) {
-          setCityFilters([item, ...cityFilters])
+          setCityFilters(cityFilters => [item, ...cityFilters])
         } else {
-          const filtered = cityFilters.filter(element => element !== item);
-          setCityFilters(filtered)
+          setCityFilters(
+            cityFilters => cityFilters.filter(element => element !== item)
+          );
         }
         break;
       case 'state':
         if (checked) {
-          setStateFilters([item, ...stateFilters])
+          setStateFilters(stateFilters => [item, ...stateFilters])
         } else {
-          const filtered = stateFilters.filter(element => element !== item);
-          setStateFilters(filtered)
+          setStateFilters(
+            stateFilters => stateFilters.filter(element => element !== item)
+          );
         }
         break;
       default:
@@ -95,7 +97,13 @@ export default function MainContainer() {
     }
   }
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const oldQuery = searchQuery;
     setSearchQuery(e.target.value);
+    if (e.target.value.length < oldQuery.length) {
+      searchRestaurants();
+    } else {
+      setSearchQuery(e.target.value);
+    }
   }
 
   const handleSearch = (e: React.FormEvent<HTMLFormElement>) => {
@@ -112,7 +120,6 @@ export default function MainContainer() {
           if (restaurant[key].toLowerCase().includes(searchQuery.toLowerCase())) {
             filtered.push(restaurant);
             break;
-            console.log(filtered, 'filtered');
           }
         }
       })
@@ -122,7 +129,6 @@ export default function MainContainer() {
     }
   }
   
-
   const filterRestaurants = ({ category, item, checked }: IFilterData) => {
     toggleFilters(category, item, checked);
   }
@@ -157,34 +163,38 @@ export default function MainContainer() {
   useEffect(() => {
     // Run through restaurants, if filter string is in that category, add the restaurant to array
     let sorted: IRestaurant[] = [];
-    console.log(genreFilters, 'genreFilters')
     // TODO: Pull this out into its own function
     if (genreFilters.length || cityFilters.length || stateFilters.length ) {
-      let baseList: IRestaurant[] = [...sortedRestaurants];
       let filtered: IRestaurant[] = [];
       if(genreFilters.length){
         genreFilters.forEach(filter => {
-          baseList.forEach(restaurant => {
+          restaurants.forEach(restaurant => {
             if(restaurant.genre.includes(filter)) {
-              filtered.push(restaurant);
+              if (!filtered.includes(restaurant)) {
+                filtered.push(restaurant);
+              }
             }
           })
         })
       }
       if(cityFilters.length){
         cityFilters.forEach(filter => {
-          baseList.forEach((restaurant: any) => {
+          restaurants.forEach((restaurant: any) => {
             if (restaurant.city.includes(filter)) {
-              filtered.push(restaurant)
+              if (!filtered.includes(restaurant)) {
+                filtered.push(restaurant)
+              }
             }
           })
         });
       }
       if(stateFilters.length){
         stateFilters.forEach(filter => {
-          baseList.forEach((restaurant: any) => {
+          restaurants.forEach((restaurant: any) => {
             if (restaurant.state.includes(filter)) {
-              filtered.push(restaurant)
+              if (!filtered.includes(restaurant)) {
+                filtered.push(restaurant)
+              }
             }
           })
         });
@@ -195,7 +205,7 @@ export default function MainContainer() {
       sorted = sortRestaurants(restaurants, 'name');
     }
     setSortedRestaurants(sorted);
-  }, [genreFilters, cityFilters, stateFilters])
+  }, [genreFilters, cityFilters, stateFilters, searchQuery])
 
   return (
     <div className='main-container'>
