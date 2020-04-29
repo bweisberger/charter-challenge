@@ -4,21 +4,27 @@
 
 ## File Structure
 - All components have their own directory, which also includes relevant stylesheets and an index.ts file to export modules.
+- The tree structure below serves as an example to demonstrate this repo's structure.
 
+```
 .
-+-- _src
-|   +-- _MainContainer
-|   |   +-- MainContainer.tsx
-|   |   +-- MainContainer.css
-|   |   +-- index.ts
-|   |   +-- _FilterContainer
-|   |   |   +-- _FilterList
-|   |   |   +-- _Filter
-|   |   +-- _RestaurantContainer
-|   |   |   +-- _PageNumber
-|   |   |   +-- _RestaurantList
-|   |   |   +-- _Restaurant
-|   |   +-- _SearchBar
+└── src
+    └── MainContainer/
+        ├── MainContainer.tsx
+        ├── MainContainer.css
+        ├── index.ts
+        ├── FilterContainer/
+        │   ├── FilterContainer.tsx
+        │   ├── FilterContainer.css
+        │   ├── index.ts
+        │   ├── FilterList/
+        │   └── Filter/
+        ├── RestaurantContainer/
+        │   ├── PageNumber/
+        │   ├── RestaurantList/
+        │   └── Restaurant/
+        └── SearchBar/
+```
 
 ## Outstanding Concerns/Future Efforts
 1) Add testing
