@@ -17,15 +17,13 @@ export default function PageNumbers({pages, handlePage, currentPage}: ParentProp
     }
   });
   useEffect(() => {
-    console.log(currentPage, "currentPage")
     mappedPages = pages.map(page => {
-      console.log(parseInt(currentPage) === page, currentPage, page, 'in map')
-     if(parseInt(currentPage) === page){
-       return <strong><span key={page} onClick={handlePage}> {page} </span></strong>
-     } else {
-       return <span key={page} onClick={handlePage}> {page} </span>
-     }
-   });
+      if(parseInt(currentPage) === page){
+        return <strong><span key={page} onClick={handlePage}> {page} </span></strong>
+      } else {
+        return <span key={page} onClick={handlePage}> {page} </span>
+      }
+    });
   }, [currentPage]);
 
   return (

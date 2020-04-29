@@ -8,27 +8,20 @@ import { FilterContainer } from './FilterContainer';
 import { SearchBar } from './SearchBar';
 import './MainContainer.css';
 
-// interface Category {
-//   name: string;
-// }
-
-// interface CategoryCount {
-//   count: number;
-// }
-
 interface IFilterData {
   category: string;
   item: string;
   checked: boolean;
 }
 
-
 export default function MainContainer() {
   const [restaurants, setRestaurants] = useState<IRestaurant[]>([]);
   const [sortedRestaurants, setSortedRestaurants] = useState<IRestaurant[]>([]);
+  // TODO remove these three from state - compute once and pass down as props instead.
   const [genres, setGenres] = useState<any | undefined>();
   const [states, setStates] = useState<any | undefined>();
   const [cities, setCities] = useState<any | undefined>();
+
   const [currentPage, setCurrentPage] = useState<string>('1')
   const [pages, setPages] = useState<number[]>([]);
   const [genreFilters, setGenreFilters] = useState<string[]>([]);
@@ -65,7 +58,7 @@ export default function MainContainer() {
     return sorted;
   }
   const toggleFilters = (category: string, item: string, checked: boolean) => {
-    switch(category) {
+    switch (category) {
       case 'genre':
         if (checked) {
           setGenreFilters(genreFilters => [item, ...genreFilters]);
@@ -94,7 +87,7 @@ export default function MainContainer() {
         }
         break;
       default:
-        console.error(`Filter called with category ${category}.`) 
+        console.error(`Filter called with category ${category}.`)
         break;
     }
   }
@@ -102,6 +95,7 @@ export default function MainContainer() {
   const handlePage = (e: React.MouseEvent<HTMLSpanElement>) => {
     setCurrentPage((e.target as HTMLSpanElement).textContent!);
   }
+
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const oldQuery = searchQuery;
     setSearchQuery(e.target.value);
@@ -119,7 +113,7 @@ export default function MainContainer() {
 
   const searchRestaurants = () => {
     const filtered: IRestaurant[] = [];
-    if(searchQuery) {
+    if (searchQuery) {
       sortedRestaurants.forEach((restaurant: any) => {
         for (let key in restaurant) {
           if (restaurant[key].toLowerCase().includes(searchQuery.toLowerCase())) {
@@ -141,11 +135,11 @@ export default function MainContainer() {
     }
     return pageNumbers;
   }
-  
+
   const filterRestaurants = ({ category, item, checked }: IFilterData) => {
     toggleFilters(category, item, checked);
   }
-    
+
   const getRestaurants = async (): Promise<void> => {
     const options = {
       url: "https://code-challenge.spectrumtoolbox.com/api/restaurants",
@@ -158,6 +152,7 @@ export default function MainContainer() {
         setRestaurants([...response.data]);
       });
   }
+  
   useEffect(() => {
     getRestaurants();
   }, [])
@@ -177,13 +172,13 @@ export default function MainContainer() {
   useEffect(() => {
     // Run through restaurants, if filter string is in that category, add the restaurant to array
     let sorted: IRestaurant[] = [];
-    // TODO: Pull this out into its own function
-    if (genreFilters.length || cityFilters.length || stateFilters.length ) {
+    // TODO: Pull this repeated code out into its own function
+    if (genreFilters.length || cityFilters.length || stateFilters.length) {
       let filtered: IRestaurant[] = [];
-      if(genreFilters.length){
+      if (genreFilters.length) {
         genreFilters.forEach(filter => {
           restaurants.forEach(restaurant => {
-            if(restaurant.genre.includes(filter)) {
+            if (restaurant.genre.includes(filter)) {
               if (!filtered.includes(restaurant)) {
                 filtered.push(restaurant);
               }
@@ -191,7 +186,7 @@ export default function MainContainer() {
           })
         })
       }
-      if(cityFilters.length){
+      if (cityFilters.length) {
         cityFilters.forEach(filter => {
           restaurants.forEach((restaurant: any) => {
             if (restaurant.city.includes(filter)) {
@@ -202,7 +197,7 @@ export default function MainContainer() {
           })
         });
       }
-      if(stateFilters.length){
+      if (stateFilters.length) {
         stateFilters.forEach(filter => {
           restaurants.forEach((restaurant: any) => {
             if (restaurant.state.includes(filter)) {
@@ -229,9 +224,9 @@ export default function MainContainer() {
   return (
     <div className='main-container'>
       <SearchBar handleSearch={handleSearch} search={searchQuery} handleChange={handleChange} />
-      <PageNumbers pages={pages} handlePage={handlePage} currentPage={currentPage}/>
+      <PageNumbers pages={pages} handlePage={handlePage} currentPage={currentPage} />
       <FilterContainer genres={genres} states={states} cities={cities} filterRestaurants={filterRestaurants} />
-      <RestaurantContainer restaurants={sortedRestaurants} currentPage={currentPage}/>
+      <RestaurantContainer restaurants={sortedRestaurants} currentPage={currentPage} />
     </div>
   )
 }
