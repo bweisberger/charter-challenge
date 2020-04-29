@@ -171,7 +171,7 @@ export default function MainContainer() {
     setStates(getCategoryCount('state'));
 
     setPages(calculatePages(sorted));
-    
+    setCurrentPage('1');
   }, [restaurants])
 
   useEffect(() => {
@@ -220,6 +220,11 @@ export default function MainContainer() {
     setSortedRestaurants(sorted);
     setPages(calculatePages(sorted));
   }, [genreFilters, cityFilters, stateFilters, searchQuery])
+
+  useEffect(() => {
+    setPages(calculatePages(sortedRestaurants));
+    setCurrentPage('1');
+  }, [sortedRestaurants])
 
   return (
     <div className='main-container'>

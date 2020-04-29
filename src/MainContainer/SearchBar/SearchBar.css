@@ -9,6 +9,11 @@
   width: 80%;
   height: 40px;
   font-size: 22px;
+  padding-left: 10px;
+}
+
+.search-bar:focus, .submit-button:focus{
+  outline: none;
 }
 
 .submit-button {

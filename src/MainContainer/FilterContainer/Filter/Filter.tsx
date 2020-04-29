@@ -55,7 +55,7 @@ export default function Filter({handleFilter, name, category}: ParentProps) {
   return (
     <span className={name}>
       {/* TODO: Create checkbox group with parent checkbox */}
-  <h3 onClick={toggleExpand}>{expanded ? "-" : "+"} { capitalize(name!) }</h3> 
+  <h3 className='filter-title' onClick={toggleExpand}>{expanded ? "-" : "+"} { capitalize(name!) }</h3> 
       <div className='checkbox-container'>{ expanded ? checkBoxes : null }</div>
     </span>
   )

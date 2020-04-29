@@ -7,3 +7,7 @@
 .checkbox-container {
   width: 250px;
 }
+
+.filter-title {
+  cursor: pointer;
+}

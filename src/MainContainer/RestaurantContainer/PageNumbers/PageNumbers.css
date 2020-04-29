@@ -1,8 +1,12 @@
 .current{
   color: skyblue;
-  font-weight: bold;
+  font-weight: 700;
 }
 
 .not-current{
   font-weight: 300;
+}
+
+.number {
+  cursor: pointer;
 }

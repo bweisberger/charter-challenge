@@ -11,9 +11,9 @@ export default function PageNumbers({pages, handlePage, currentPage}: ParentProp
 
   let mappedPages: JSX.Element[] = pages.map(page => {
     if(parseInt(currentPage) === page){
-      return <span key={page} onClick={handlePage} className="current"> {page} </span>
+      return <span key={page} onClick={handlePage} className="current number"> {page} </span>
     } else {
-      return <span key={page} onClick={handlePage} className='not-current'> {page} </span>
+      return <span key={page} onClick={handlePage} className='not-current number'> {page} </span>
     }
   });
   useEffect(() => {
@@ -30,7 +30,7 @@ export default function PageNumbers({pages, handlePage, currentPage}: ParentProp
 
   return (
     <div className='pages-container'>
-      {mappedPages}
+      Page: &ensp;{mappedPages}
     </div>
   )
 }
